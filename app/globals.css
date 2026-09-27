@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --header-h: 76px;
+    color-scheme: dark;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 12px);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-ink-900 font-sans text-cream-100 antialiased;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgba(196, 136, 78, 0.35);
+    color: #fbf8f2;
+  }
+  /* Visible, on-brand focus states for keyboard users */
+  :focus-visible {
+    outline: 2px solid #d09a64;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8) sepia(0.4);
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .section {
+    @apply relative py-24 md:py-32;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Thin copper rule with a centred diamond — used as a signature divider */
+  .ornament {
+    @apply relative flex items-center gap-3 text-copper-500;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: "";
+    @apply h-px flex-1 bg-gradient-to-r from-transparent via-copper-500/50 to-transparent;
+  }
+  .field {
+    @apply block w-full border border-cream/15 bg-ink-800/70 px-4 py-3.5 text-[0.95rem] text-cream-50 placeholder:text-cream-300/40 transition-colors duration-200 hover:border-cream/25 focus:border-copper-400 focus:bg-ink-800 focus:outline-none;
+  }
+  .field-light {
+    @apply block w-full border border-ink-900/15 bg-white/70 px-4 py-3.5 text-[0.95rem] text-ink-900 placeholder:text-ink-900/35 transition-colors duration-200 hover:border-ink-900/30 focus:border-copper-600 focus:bg-white focus:outline-none;
+  }
+  .label {
+    @apply mb-2 block text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-cream-300/80;
+  }
+  .label-light {
+    @apply mb-2 block text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-900/60;
+  }
+  .card-frame {
+    @apply relative border border-cream/[0.08] bg-ink-800 shadow-card;
+  }
+  .img-zoom {
+    @apply transition-transform duration-[1200ms] ease-luxe will-change-transform;
+  }
+  .group:hover .img-zoom {
+    transform: scale(1.06);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reduced motion — disable non-essential animation */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
